@@ -100,7 +100,7 @@ export EDITOR='nvim'
 # python
 export PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
 fi
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
@@ -117,7 +117,7 @@ export GOPROXY='https://goproxy.cn,direct'
 bindkey '^T' fzf-file-widget
 bindkey '^R' fzf-history-widget
 export FZF_DEFAULT_COMMAND="fd --exclude={'env,.git,.vscode,.idea,node_moudles,__pycache__'} --hidden --follow"
-export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --pointer='▶' --marker='✓' --preview-window=:70% --bind 'ctrl-f:page-down,ctrl-b:page-up'"
+export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --pointer='▶' --marker='✓' --preview-window=:70% --bind 'ctrl-f:page-down,ctrl-b:page-up,ctrl-a:toggle-all'"
 export FZF_PREVIEW_OPTS="--preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_CTRL_T_OPTS="$FZF_PREVIEW_OPTS"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type f"
