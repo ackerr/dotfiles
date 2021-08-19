@@ -30,7 +30,7 @@ set hlsearch
 set ignorecase
 set incsearch
 set number
-set relativenumber
+" set relativenumber
 set smartindent
 set shiftwidth=4
 set softtabstop=4
@@ -102,15 +102,16 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 
 " move
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
 Plug 'junegunn/fzf', { 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
-if has("nvim")
-    Plug 'rbgrouleff/bclose.vim'
-endif
+Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'romainl/vim-cool'
 Plug 'psliwka/vim-smoothie'
+Plug 'chaoren/vim-wordmotion'
 
 " programming
 Plug 'airblade/vim-gitgutter'
@@ -118,6 +119,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'honza/vim-snippets'
 Plug 'andrewstuart/vim-kubernetes'
+Plug 'cespare/vim-toml'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'antoinemadec/coc-fzf'
@@ -217,20 +219,43 @@ hi! link GitGutterDelete GitDeleteStripe
 let g:gitgutter_sign_removed = '▶'
 let g:gitgutter_preview_win_floating = 1
 
-" NerdTree
-hi! link NERDTreeFlags NERDTreeDir
-let g:NERDTreeIgnore=['\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__', '.git$', '.idea', '.vscode', '\.swp']
-let NERDTreeChDirMode=3
-let NERDTreeShowBookmarks=1
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI=1
-let NERDTreeAutoDeleteBuffer=1
-let g:nerdtree_tabs_focus_on_files=1
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
+" nvim-tree.lua
+nnoremap <leader>n :NvimTreeToggle<CR>
+nnoremap <leader>m :NvimTreeFindFile<CR>
 
-nnoremap <leader>m :NERDTreeFind<CR>
-nnoremap <leader>n :NERDTreeToggle<CR>
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:nvim_tree_ignore = ['.git', 'node_modules', '__pycache__', '.idea', '.pyc', '.pytest_cache']
+let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ]
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_hide_dotfiles=0
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗",
+    \   'staged': "✓",
+    \   'unmerged': "",
+    \   'renamed': "➜",
+    \   'untracked': "★",
+    \   'deleted': "",
+    \   'ignored': "◌"
+    \   },
+    \ 'folder': {
+    \   'arrow_open': "",
+    \   'arrow_closed': "",
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   },
+    \   'lsp': {
+    \     'hint': "",
+    \     'info': "",
+    \     'warning': "",
+    \     'error': "",
+    \   }
+    \ }
 
 " EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
