@@ -51,8 +51,6 @@ nnoremap <leader>ev  :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv  :source $MYVIMRC<cr>
 nnoremap <c-y> viwy
 
-noremap <leader>ll :nohl<cr>
-
 " register
 vnoremap p "_dP
 
@@ -91,7 +89,7 @@ Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
-Plug 'itchyny/vim-cursorword'
+" Plug 'itchyny/vim-cursorword'
 Plug 'junegunn/vim-easy-align'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'editorconfig/editorconfig-vim'
@@ -105,15 +103,16 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'junegunn/fzf', { 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
-Plug 'rbgrouleff/bclose.vim'
-Plug 'francoiscabrol/ranger.vim'
 Plug 'romainl/vim-cool'
 Plug 'psliwka/vim-smoothie'
-Plug 'chaoren/vim-wordmotion'
 
 " programming
+Plug 'github/copilot.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
@@ -125,25 +124,17 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'antoinemadec/coc-fzf'
 Plug 'vim-test/vim-test'
 
+Plug 'wakatime/vim-wakatime'
+
 " terminal
 Plug 'voldikss/vim-floaterm'
-" Plug 'skywind3000/asyncrun.vim'
-" Plug 'skywind3000/asyncrun.extra'
-
-" startuptime
-" Plug 'tweekmonster/startuptime.vim'
-" Plug 'dstein64/vim-startuptime'
 
 call plug#end()
 filetype plugin indent on
 
 " Startify
 let g:startify_enable_special = 0
-let g:startify_session_autoload = 1
-let g:startify_session_delete_buffers = 1
-let g:startify_session_dir = '~/.config/nvim/session'
 let g:startify_lists = [
-            \ { 'type': 'sessions',  'header': ['   Sessions'] },
             \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
             \ { 'type': 'files',     'header': ['   Files'] },
             \]
@@ -152,47 +143,21 @@ let g:startify_lists = [
 let g:fzf_preview_window = [ 'down:60%', 'ctrl-/' ]
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.7} }
 
-nnoremap <silent> <leader>fr :Rg<cr>
-xnoremap <silent> <leader>fr y:Rg <c-r>"<cr>
-nnoremap <silent> <leader>ff :Files<cr>
-nnoremap <silent> <c-p> :Files<cr>
-nnoremap <silent> <leader>fb :Buffers<cr>
-nnoremap <silent> <leader>fgf :GFiles?<cr>
-nnoremap <silent> <leader>fgb :Git blame --date=short<cr>
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec, 'down:60%', 'ctrl-/'), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
-function! s:list_buffers()
-  redir => list
-  silent ls
-  redir END
-  return split(list, "\n")
-endfunction
-
-function! s:delete_buffers(lines)
-  execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
-endfunction
-
-command! -nargs=* -bang BD call fzf#run(fzf#wrap({
-  \ 'source': s:list_buffers(),
-  \ 'sink*': { lines -> s:delete_buffers(lines) },
-  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
-\ }))
-
-
 "coc-fzf
 let g:coc_fzf_preview='down:60%'
 let g:coc_fzf_preview_toggle_key = "ctrl-/"
 let g:coc_fzf_opts=['--layout=reverse']
 
-noremap <silent> <m-c> :<C-u>CocFzfList commands<CR>
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <c-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>fr <cmd>Telescope live_grep<cr>
+xnoremap <leader>fr y:Telescope live_grep<cr><c-r>"
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fgf <cmd>Telescope git_status<cr>
+nnoremap gr <cmd>Telescope lsp_references<cr>
+
+nnoremap <leader>fgb :Git blame --date=short<cr>
 
 " fzf-preview
 let g:fzf_preview_floating_window_rate = 0.7
@@ -219,43 +184,6 @@ hi! link GitGutterDelete GitDeleteStripe
 let g:gitgutter_sign_removed = '▶'
 let g:gitgutter_preview_win_floating = 1
 
-" nvim-tree.lua
-nnoremap <leader>n :NvimTreeToggle<CR>
-nnoremap <leader>m :NvimTreeFindFile<CR>
-
-let g:nvim_tree_ignore = ['.git', 'node_modules', '__pycache__', '.idea', '.pyc', '.pytest_cache']
-let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ]
-let g:nvim_tree_auto_close = 1
-let g:nvim_tree_hide_dotfiles=0
-let g:nvim_tree_icons = {
-    \ 'default': '',
-    \ 'symlink': '',
-    \ 'git': {
-    \   'unstaged': "✗",
-    \   'staged': "✓",
-    \   'unmerged': "",
-    \   'renamed': "➜",
-    \   'untracked': "★",
-    \   'deleted': "",
-    \   'ignored': "◌"
-    \   },
-    \ 'folder': {
-    \   'arrow_open': "",
-    \   'arrow_closed': "",
-    \   'default': "",
-    \   'open': "",
-    \   'empty': "",
-    \   'empty_open': "",
-    \   'symlink': "",
-    \   'symlink_open': "",
-    \   },
-    \   'lsp': {
-    \     'hint': "",
-    \     'info': "",
-    \     'warning': "",
-    \     'error': "",
-    \   }
-    \ }
 
 " EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -293,32 +221,6 @@ let g:airline_extensions=["tabline", "coc", "branch"]
 nnoremap <leader>/ :Commentary<cr>
 vnoremap <leader>/ :Commentary<cr>
 
-" GUI config
-if has('gui_running')
-    source $VIMRUNTIME/delmenu.vim
-    source $VIMRUNTIME/menu.vim
-
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=e
-    if has("win32")
-        " https://github.com/tonsky/FiraCode/issues/462
-        set guifont=Fira\ Code:h12
-        set lines=38
-        set columns=150
-    else
-        set guifont=Fira\ Code:h14
-        set macligatures
-        set lines=60
-        set columns=250
-    endif
-    set linespace=3
-endif
-
 " coc.nvim
 " ===================
 let g:coc_global_extensions = [
@@ -333,7 +235,6 @@ let g:coc_global_extensions = [
     \ "coc-diagnostic",
     \ "coc-floaterm",
     \ "coc-lists",
-    \ "coc-explorer",
     \ "coc-snippets",
     \ "coc-highlight",
     \ "coc-translator",
@@ -405,7 +306,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent! call CocActionAsync('highlight')
+" autocmd CursorHold * silent! call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -454,17 +355,6 @@ vmap <m-t> <Plug>(coc-translator-pv)
 
 " coc-yank
 nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
-
-" coc-explorer
-nnoremap <leader>o :CocCommand explorer<cr>
-
-" ranger.vim
-let g:ranger_map_keys = 0
-let g:NERDTreeHijackNetrw = 0
-let g:ranger_replace_netrw = 1
-
-command! Rangerr FloatermNew ranger
-nnoremap <leader>ra :Rangerr<cr>
 
 " floaterm
 noremap <leader>ft :FloatermNew --wintype=normal --position=bottom --height=20<cr>
@@ -523,3 +413,90 @@ augroup go
   " :GoRun
   autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 augroup END
+
+lua << EOF
+-- following options are the default
+require'nvim-tree'.setup {
+  -- disables netrw completely
+  disable_netrw       = true,
+  -- hijack netrw window on startup
+  hijack_netrw        = true,
+  -- open the tree when running this setup function
+  open_on_setup       = false,
+  -- will not open on setup if the filetype is in this list
+  ignore_ft_on_setup  = {'startify', 'dashboard'},
+  -- closes neovim automatically when the tree is the last **WINDOW** in the view
+  auto_close          = true,
+  -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
+  open_on_tab         = false,
+  -- hijacks new directory buffers when they are opened.
+  update_to_buf_dir   = {
+    -- enable the feature
+    enable = true,
+    -- allow to open the tree if it was previously closed
+    auto_open = true,
+  },
+  -- hijack the cursor in the tree to put it at the start of the filename
+  hijack_cursor       = false,
+  -- updates the root directory of the tree on `DirChanged` (when you run `:cd` usually)
+  update_cwd          = false,
+  -- show lsp diagnostics in the signcolumn
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
+  update_focused_file = {
+    -- enables the feature
+    enable      = false,
+    -- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
+    -- only relevant when `update_focused_file.enable` is true
+    update_cwd  = false,
+    -- list of buffer names / filetypes that will not update the cwd if the file isn't found under the current root directory
+    -- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
+    ignore_list = {}
+  },
+  -- configuration options for the system open command (`s` in the tree by default)
+  system_open = {
+    -- the command to run this, leaving nil should work in most cases
+    cmd  = nil,
+    -- the command arguments as a list
+    args = {}
+  },
+
+  git = {
+      enable = true,
+      ignore = true,
+      timeout = 500,
+  },
+
+  view = {
+    -- width of the window, can be either a number (columns) or a string in `%`, for left or right side placement
+    width = 30,
+    -- height of the window, can be either a number (columns) or a string in `%`, for top or bottom side placement
+    height = 30,
+    -- Hide the root path of the current folder on top of the tree
+    hide_root_folder = false,
+    -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
+    side = 'left',
+    -- if true the tree will resize itself after opening a file
+    auto_resize = false,
+    mappings = {
+      -- custom only false will merge the list with the default mappings
+      -- if true, it will only use your list to set the mappings
+      custom_only = false,
+      -- list of mappings to set on the tree manually
+      list = {}
+    }
+  }
+}
+EOF
+
+" nvim-tree.lua
+nnoremap <leader>n :NvimTreeToggle<CR>
+nnoremap <leader>m :NvimTreeFindFile<CR>
