@@ -57,8 +57,6 @@ vnoremap p "_dP
 " buffer
 noremap <leader>dd :bp\|bd #<cr>      " close current buffer
 noremap <leader>bo :%bd\|e#\|bd#<cr>  " close other buffers, except current
-nnoremap H :bp<cr>
-nnoremap L :bn<cr>
 nnoremap <leader>w :w<cr>
 vnoremap <leader>w <esc>:w<cr>
 nnoremap <leader>q :q<cr>
@@ -78,101 +76,94 @@ nnoremap <c-l> <c-w><c-l>
 filetype off
 call plug#begin('~/.config/nvim/plugins')
 
-Plug 'rakr/vim-one'
+Plug 'shaunsingh/nord.nvim'
 Plug 'mhinz/vim-startify'
-Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " edit
 Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 " Plug 'itchyny/vim-cursorword'
 Plug 'junegunn/vim-easy-align'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'brooth/far.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'Vimjas/vim-python-pep8-indent'
-
-" move
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
-
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-
-Plug 'junegunn/fzf', { 'do': './install --all'  }
-Plug 'junegunn/fzf.vim'
-Plug 'romainl/vim-cool'
-Plug 'psliwka/vim-smoothie'
-
 " programming
 Plug 'github/copilot.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-Plug 'honza/vim-snippets'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'cespare/vim-toml'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-Plug 'antoinemadec/coc-fzf'
 Plug 'vim-test/vim-test'
+Plug 'romainl/vim-cool'
+Plug 'psliwka/vim-smoothie'
 
 Plug 'wakatime/vim-wakatime'
 
 " terminal
 Plug 'voldikss/vim-floaterm'
 
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'akinsho/bufferline.nvim'
+Plug 'nvim-lualine/lualine.nvim'
+
+" lsp
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
+
+" lsp completion
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'windwp/nvim-autopairs'
+
+" lsp icon
+Plug 'onsails/lspkind-nvim'
+
+" lsp format
+Plug 'mhartington/formatter.nvim'
+
+" syntax
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" search
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" snippet.
+Plug 'rafamadriz/friendly-snippets'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
 call plug#end()
+
 filetype plugin indent on
 
-" Startify
+set completeopt=menu,menuone,noselect
+
+" " Startify
 let g:startify_enable_special = 0
 let g:startify_lists = [
             \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
             \ { 'type': 'files',     'header': ['   Files'] },
             \]
 
-" fzf
-let g:fzf_preview_window = [ 'down:60%', 'ctrl-/' ]
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.7} }
-
-"coc-fzf
-let g:coc_fzf_preview='down:60%'
-let g:coc_fzf_preview_toggle_key = "ctrl-/"
-let g:coc_fzf_opts=['--layout=reverse']
-
-" Telescope
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <c-p> <cmd>Telescope find_files<cr>
-nnoremap <leader>fr <cmd>Telescope live_grep<cr>
-xnoremap <leader>fr y:Telescope live_grep<cr><c-r>"
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fgf <cmd>Telescope git_status<cr>
-nnoremap gr <cmd>Telescope lsp_references<cr>
-
 nnoremap <leader>fgb :Git blame --date=short<cr>
 
-" fzf-preview
-let g:fzf_preview_floating_window_rate = 0.7
-let g:fzf_preview_fzf_preview_window_option = 'right:70%'
-let g:fzf_preview_defalut_fzf_options = { '--preview-window': ':70%' }
-
 " colorscheme
+set noshowmode
 set t_Co=256
 set background=dark
-let g:one_allow_italics = 1
-silent! colorscheme one
+silent! colorscheme nord
 set termguicolors
 hi SignColumn guifg=fg guibg=bg
 hi CursorColumn guibg='#384C38'
-" hi Normal guibg=None ctermbg=None
 
 " Gitgutter
 hi GitAddStripe ctermfg=66 ctermbg=66 guifg='#384C38' guibg='#384C38'
@@ -199,162 +190,10 @@ let g:easy_align_delimiters = {
 \     'ignore_groups':   ['!Comment'] },
 \ }
 
-" Airline
-set noshowmode
-set laststatus=1
 
-let g:airline_theme='violet'
-let g:airline_powerline_fonts = 1 " https://github.com/powerline/fonts
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
-let g:airline_highlighting_cache=1
-let g:airline_extensions=["tabline", "coc", "branch"]
-
-" Comment
+" vim-comment
 nnoremap <leader>/ :Commentary<cr>
 vnoremap <leader>/ :Commentary<cr>
-
-" coc.nvim
-" ===================
-let g:coc_global_extensions = [
-    \ "coc-pyright",
-    \ "coc-clangd",
-    \ "coc-go",
-    \ "coc-tsserver",
-    \ "coc-vimlsp",
-    \ "coc-json",
-    \ "coc-yaml",
-    \ "coc-marketplace",
-    \ "coc-diagnostic",
-    \ "coc-floaterm",
-    \ "coc-lists",
-    \ "coc-snippets",
-    \ "coc-highlight",
-    \ "coc-translator",
-    \ "coc-yank"]
-
-" if hidden is not set, TextEdit might fail.
-set hidden
-
-" Some servers have issues with backup files, see #649
-
-set nobackup
-set nowritebackup
-
-" " Better display for messages
-set cmdheight=1
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=400
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-let g:coc_snippet_next = '<tab>'
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use `alt-j` and `alt-k` to navigate diagnostics
-nmap <silent> <m-j> <Plug>(coc-diagnostic-next)
-nmap <silent> <m-k> <Plug>(coc-diagnostic-prev)
-
-" Remap keys for gotos
-nmap gd <Plug>(coc-definition)
-nmap gy <Plug>(coc-type-definition)
-nmap gi <Plug>(coc-implementation)
-nmap gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-" autocmd CursorHold * silent! call CocActionAsync('highlight')
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>rf <Plug>(coc-refactor)
-nmap gx <Plug>(coc-openlink)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-autocmd BufWritePre *.py :Format
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :silent call CocAction('runCommand', 'editor.action.organizeImport')
-
-autocmd BufWritePre *.go :OR
-
-" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-" If use <TAB> , <c-i> can't use  <TAB> == <c-i> ?
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ca  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>cf  <Plug>(coc-fix-current)
-
-" coc-translator
-nmap <m-t> <Plug>(coc-translator-p)
-vmap <m-t> <Plug>(coc-translator-pv)
-
-" coc-yank
-nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
 
 " floaterm
 noremap <leader>ft :FloatermNew --wintype=normal --position=bottom --height=20<cr>
@@ -389,114 +228,250 @@ let test#python#runner = 'pytest'
 let test#go#runner = "gotest"
 
 
-" vim-go
-let g:go_gopls_enabled=0
-let g:go_def_mapping_enabled = 0
-let g:go_fmt_autosave = 0
-
-let g:go_highlight_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_extra_types = 1
-
-augroup go
-  autocmd!
-  " Show by default 4 spaces for a tab
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-  " :GoFmt
-  autocmd FileType go nnoremap gf :GoFmt<cr>
-  " :GoRun
-  autocmd FileType go nmap <leader>gr  <Plug>(go-run)
-augroup END
-
+" lsp config
 lua << EOF
--- following options are the default
-require'nvim-tree'.setup {
-  -- disables netrw completely
-  disable_netrw       = true,
-  -- hijack netrw window on startup
-  hijack_netrw        = true,
-  -- open the tree when running this setup function
-  open_on_setup       = false,
-  -- will not open on setup if the filetype is in this list
-  ignore_ft_on_setup  = {'startify', 'dashboard'},
-  -- closes neovim automatically when the tree is the last **WINDOW** in the view
-  auto_close          = true,
-  -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
-  open_on_tab         = false,
-  -- hijacks new directory buffers when they are opened.
-  update_to_buf_dir   = {
-    -- enable the feature
-    enable = true,
-    -- allow to open the tree if it was previously closed
-    auto_open = true,
-  },
-  -- hijack the cursor in the tree to put it at the start of the filename
-  hijack_cursor       = false,
-  -- updates the root directory of the tree on `DirChanged` (when you run `:cd` usually)
-  update_cwd          = false,
-  -- show lsp diagnostics in the signcolumn
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    }
-  },
-  -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
-  update_focused_file = {
-    -- enables the feature
-    enable      = false,
-    -- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
-    -- only relevant when `update_focused_file.enable` is true
-    update_cwd  = false,
-    -- list of buffer names / filetypes that will not update the cwd if the file isn't found under the current root directory
-    -- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
-    ignore_list = {}
-  },
-  -- configuration options for the system open command (`s` in the tree by default)
-  system_open = {
-    -- the command to run this, leaving nil should work in most cases
-    cmd  = nil,
-    -- the command arguments as a list
-    args = {}
-  },
+local nvim_lsp = require('lspconfig')
 
-  git = {
-      enable = true,
-      ignore = true,
-      timeout = 500,
-  },
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  view = {
-    -- width of the window, can be either a number (columns) or a string in `%`, for left or right side placement
-    width = 30,
-    -- height of the window, can be either a number (columns) or a string in `%`, for top or bottom side placement
-    height = 30,
-    -- Hide the root path of the current folder on top of the tree
-    hide_root_folder = false,
-    -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
-    side = 'left',
-    -- if true the tree will resize itself after opening a file
-    auto_resize = false,
-    mappings = {
-      -- custom only false will merge the list with the default mappings
-      -- if true, it will only use your list to set the mappings
-      custom_only = false,
-      -- list of mappings to set on the tree manually
-      list = {}
-    }
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<m-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<m-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local servers = { 'pyright', 'tsserver', 'gopls' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    capabilities=capabilities,
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+  }
+end
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = false,
+  update_in_insert = false,
+  severity_sort = false,
+})
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+EOF
+
+" formatter
+lua << EOF
+require('formatter').setup {
+  filetype = {
+    python = {
+      function()
+        return {
+          exe = "black",
+          args = { '-' },
+          stdin = true,
+        }
+      end
+    },
+    go = {
+      function()
+        return {
+          exe = 'goimports',
+          args = { "-w", vim.api.nvim_buf_get_name(0) },
+          stdin = false,
+        }
+      end,
+    },
   }
 }
 EOF
 
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.py,*.go FormatWrite
+augroup END
+
+" nvim-cmp.
+lua <<EOF
+vim.cmd [[highlight CmpItemAbbrDeprecated guifg=#D8DEE9 guibg=NONE gui=strikethrough]]
+vim.cmd [[highlight CmpItemKindSnippet guifg=#BF616A guibg=NONE]]
+vim.cmd [[highlight CmpItemKindUnit guifg=#D08770 guibg=NONE]]
+vim.cmd [[highlight CmpItemKindProperty guifg=#A3BE8C guibg=NONE]]
+vim.cmd [[highlight CmpItemKindKeyword guifg=#EBCB8B guibg=NONE]]
+vim.cmd [[highlight CmpItemAbbrMatch guifg=#5E81AC guibg=NONE]]
+vim.cmd [[highlight CmpItemAbbrMatchFuzzy guifg=#5E81AC guibg=NONE]]
+vim.cmd [[highlight CmpItemKindVariable guifg=#8FBCBB guibg=NONE]]
+vim.cmd [[highlight CmpItemKindInterface guifg=#88C0D0 guibg=NONE]]
+vim.cmd [[highlight CmpItemKindText guifg=#81A1C1 guibg=NONE]]
+vim.cmd [[highlight CmpItemKindFunction guifg=#B48EAD guibg=NONE]]
+vim.cmd [[highlight CmpItemKindMethod guifg=#B48EAD guibg=NONE]]
+
+local cmp = require('cmp')
+
+local lspkind = require('lspkind')
+
+cmp.setup({
+  formatting = {
+    format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+  },
+  mapping = {
+    ["<CR>"] = cmp.mapping.confirm({select = true}),
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            cmp.select_next_item()
+        else
+            local copilot_keys = vim.fn["copilot#Accept"]()
+            if copilot_keys ~= "" then
+                vim.api.nvim_feedkeys(copilot_keys, "i", true)
+            else
+                fallback()
+            end
+        end
+    end, {"i", "s"}),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        else
+            fallback()
+        end
+    end, {"i", "s"}),
+  },
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+require("nvim-autopairs").setup {}
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({map_char = {tex = ""}}))
+cmp_autopairs.lisp[#cmp_autopairs.lisp + 1] = "racket"
+EOF
+
 " nvim-tree.lua
+lua << EOF
+require('nvim-tree').setup {
+  auto_close = true,
+  git = {
+    enable = false,
+    ignore = false,
+    timeout = 500,
+  },
+  filters = {
+    dotfiles = false,
+    custom = { ".git", "node_modules", ".cache", ".DS_Store", ".git", "__pycache__", ".idea" }
+  }
+}
+EOF
+
 nnoremap <leader>n :NvimTreeToggle<CR>
 nnoremap <leader>m :NvimTreeFindFile<CR>
+
+" github copilot
+let g:copilot_no_tab_map = v:true
+let g:copilot_assume_mapped = v:true
+let g:copilot_tab_fallback = ""
+
+" bufferline.nvim
+lua << EOF
+require("bufferline").setup{
+  options = {
+    numbers = "ordinal",
+    offsets = {{filetype = "NvimTree", text = "File Explorer", text_align = "center"}},
+    show_close_icon = false,
+    show_buffer_close_icons = false,
+    diagnostics = "nvim_lsp",
+    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      local icon = level:match("error") and " " or " "
+      return " " .. icon .. count
+    end,
+    separator_style = "thin",
+  },
+}
+EOF
+
+nnoremap <silent>L :BufferLineCycleNext<CR>
+nnoremap <silent>H :BufferLineCyclePrev<CR>
+
+" lualine.nvim
+lua << EOF
+require'lualine'.setup {
+    options = {
+        theme = "nord",
+    }
+}
+EOF
+
+" telescope
+nnoremap <silent><leader>ff <cmd>Telescope find_files<cr>
+nnoremap <silent><leader>fr <cmd>Telescope live_grep<cr>
+xnoremap <silent><leader>fr y:Telescope live_grep<cr><c-r>"
+nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
+nnoremap <silent><leader>fgf <cmd>Telescope git_status<cr>
+nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
+
+" nvim-treesitter
+lua << EOF
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = true,
+  }
+}
+EOF
