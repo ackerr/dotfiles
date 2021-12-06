@@ -39,6 +39,7 @@ set expandtab
 set clipboard=unnamed
 set scrolloff=5
 
+set fillchars=vert:\│ " 设置split分隔符
 set noswapfile  " 不需要.swp文件
 
 " fold
@@ -83,18 +84,19 @@ Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
-" Plug 'itchyny/vim-cursorword'
+Plug 'itchyny/vim-cursorword'
 Plug 'junegunn/vim-easy-align'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'mg979/vim-visual-multi'
 Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'norcalli/nvim-colorizer.lua'
+
 " programming
 Plug 'github/copilot.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'cespare/vim-toml'
 Plug 'vim-test/vim-test'
@@ -160,21 +162,19 @@ nnoremap <leader>fgb :Git blame --date=short<cr>
 set noshowmode
 set t_Co=256
 set background=dark
+let g:nord_contrast= v:true
+let g:nord_disable_background= v:true
 silent! colorscheme nord
 set termguicolors
-hi SignColumn guifg=fg guibg=bg
-hi CursorColumn guibg='#384C38'
+" hi SignColumn guifg=fg guibg=bg
 
 " Gitgutter
-hi GitAddStripe ctermfg=66 ctermbg=66 guifg='#384C38' guibg='#384C38'
-hi GitChangeStripe ctermfg=60 ctermbg=60 guifg='#374752' guibg='#374752'
-hi GitDeleteStripe ctermfg=0 ctermbg=0
-hi! link GitGutterAdd GitAddStripe
-hi! link GitGutterChange GitChangeStripe
-hi! link GitGutterDelete GitDeleteStripe
+" hi GitAddStripe ctermfg=66 ctermbg=66 guifg='#384C38' guibg='#384C38'
+" hi GitChangeStripe ctermfg=60 ctermbg=60 guifg='#374752' guibg='#374752'
+" hi! link GitGutterAdd GitAddStripe
+" hi! link GitGutterChange GitChangeStripe
 let g:gitgutter_sign_removed = '▶'
 let g:gitgutter_preview_win_floating = 1
-
 
 " EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -336,7 +336,7 @@ local lspkind = require('lspkind')
 
 cmp.setup({
   formatting = {
-    format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+    format = lspkind.cmp_format({with_text = false, maxwidth = 50})
   },
   mapping = {
     ["<CR>"] = cmp.mapping.confirm({select = true}),
@@ -412,7 +412,7 @@ require('nvim-tree').setup {
   },
   filters = {
     dotfiles = false,
-    custom = { ".git", "node_modules", ".cache", ".DS_Store", ".git", "__pycache__", ".idea" }
+    custom = { ".git", "node_modules", ".cache", ".DS_Store", "__pycache__", ".idea", '.dist' }
   }
 }
 EOF
@@ -448,10 +448,13 @@ nnoremap <silent>H :BufferLineCyclePrev<CR>
 
 " lualine.nvim
 lua << EOF
-require'lualine'.setup {
-    options = {
-        theme = "nord",
-    }
+require("lualine").setup {
+  options = {
+    theme = 'nord',
+  },
+  sections = {
+    lualine_x = { 'encoding', 'filetype' }
+  }
 }
 EOF
 
@@ -465,6 +468,7 @@ nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
 
 " nvim-treesitter
 lua << EOF
+require('colorizer').setup{ '*' }
 require('nvim-treesitter.configs').setup {
   highlight = {
     enable = true,
