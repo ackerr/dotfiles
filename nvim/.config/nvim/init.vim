@@ -96,7 +96,7 @@ Plug 'norcalli/nvim-colorizer.lua'
 
 " programming
 Plug 'github/copilot.vim'
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'cespare/vim-toml'
@@ -167,15 +167,6 @@ let g:nord_contrast= v:true
 let g:nord_disable_background= v:true
 silent! colorscheme nord
 set termguicolors
-" hi SignColumn guifg=fg guibg=bg
-
-" Gitgutter
-" hi GitAddStripe ctermfg=66 ctermbg=66 guifg='#384C38' guibg='#384C38'
-" hi GitChangeStripe ctermfg=60 ctermbg=60 guifg='#374752' guibg='#374752'
-" hi! link GitGutterAdd GitAddStripe
-" hi! link GitGutterChange GitChangeStripe
-let g:gitgutter_sign_removed = '▶'
-let g:gitgutter_preview_win_floating = 1
 
 " EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -204,7 +195,7 @@ tnoremap <m-]> <c-\><c-n>:FloatermNext<cr>
 tnoremap <m-[> <c-\><c-n>:FloatermPrev<cr>
 tnoremap <c-w><c-w> <c-\><c-n><c-w>w
 
-command! Lazygit FloatermNew lazygit
+command! Lazygit FloatermNew --height=0.8 --width=0.8 --name=lazygit lazygit
 nnoremap <leader>lg :Lazygit<cr>
 
 let g:floaterm_keymap_toggle = "<m-=>"
@@ -453,6 +444,11 @@ require("lualine").setup {
     theme = 'nord',
   },
   sections = {
+    lualine_c = {
+      {
+        "filename", file_status=true, path=1,
+      }
+    },
     lualine_x = { 'encoding', 'filetype' }
   }
 }
@@ -477,5 +473,25 @@ require('nvim-treesitter.configs').setup {
   indent = {
     enable = true,
   }
+}
+EOF
+
+" gitsigns.nvim
+lua << EOF
+require('gitsigns').setup {
+  signs = {
+    delete = {
+      text = '▶'
+    },
+    topdelete = {
+      text = '▶'
+    }
+  }
+}
+EOF
+
+" symbols-outline
+lua << EOF
+require('symbols-outline').setup {
 }
 EOF
