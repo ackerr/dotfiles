@@ -163,8 +163,9 @@ nnoremap <leader>fgb :Git blame --date=short<cr>
 set noshowmode
 set t_Co=256
 set background=dark
-let g:nord_contrast= v:true
-let g:nord_disable_background= v:true
+let g:nord_enable_sidebar_background=v:false
+let g:nord_contrast=v:true
+let g:nord_disable_background=v:false
 silent! colorscheme nord
 set termguicolors
 
@@ -487,11 +488,5 @@ require('gitsigns').setup {
       text = '▶'
     }
   }
-}
-EOF
-
-" symbols-outline
-lua << EOF
-require('symbols-outline').setup {
 }
 EOF
