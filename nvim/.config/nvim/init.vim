@@ -101,10 +101,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'cespare/vim-toml'
 Plug 'vim-test/vim-test'
+Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+
 Plug 'romainl/vim-cool'
 Plug 'psliwka/vim-smoothie'
 
 Plug 'wakatime/vim-wakatime'
+
+Plug 'voldikss/vim-translator'
 
 " terminal
 Plug 'voldikss/vim-floaterm'
@@ -138,6 +142,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " search
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'ahmedkhalf/project.nvim'
 
 " snippet.
 Plug 'rafamadriz/friendly-snippets'
@@ -205,21 +210,28 @@ let g:floaterm_autoclose = 1
 let g:floaterm_width=0.7
 let g:floaterm_height=0.6
 
+" vim-translator
+nmap <silent> <M-t> <Plug>TranslateW
+vmap <silent> <M-t> <Plug>TranslateWV
+
 " splitjoin
 nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
-" vim-test
+" vim-test and vim-ultest
 nmap <silent> tn :TestNearest<CR>
 nmap <silent> tf :TestFile<CR>
 nmap <silent> ts :TestSuite<CR>
 nmap <silent> tl :TestLast<CR>
 nmap <silent> tg :TestVisit<CR>
+nmap <silent> tt :UltestSummary<CR>
 
 let test#strategy = "floaterm"
 let test#python#runner = 'pytest'
 let test#go#runner = "gotest"
 
+let test#python#pytest#options = "--color=yes"
+let g:ultest_use_pty = 1
 
 " lsp config
 lua << EOF
@@ -284,7 +296,7 @@ require('formatter').setup {
       function()
         return {
           exe = "black",
-          args = { '-' },
+          args = { '-l 120' },
           stdin = true,
         }
       end
@@ -395,8 +407,14 @@ EOF
 
 " nvim-tree.lua
 lua << EOF
+vim.g.nvim_tree_respect_buf_cwd = 1
 require('nvim-tree').setup {
   auto_close = true,
+  update_cwd = true,
+  update_forcused_file = {
+    enable = true,
+    update_cwd = true
+  },
   git = {
     enable = false,
     ignore = false,
@@ -442,7 +460,7 @@ nnoremap <silent>H :BufferLineCyclePrev<CR>
 lua << EOF
 require("lualine").setup {
   options = {
-    theme = 'nord',
+    theme = 'auto',
   },
   sections = {
     lualine_c = {
@@ -490,3 +508,10 @@ require('gitsigns').setup {
   }
 }
 EOF
+
+" project.nvim
+lua << EOF
+require("project_nvim").setup { }
+require('telescope').load_extension('projects')
+EOF
+nnoremap <silent> <leader>p :Telescope projects<CR>
