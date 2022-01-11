@@ -75,7 +75,6 @@ nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 
-filetype off
 call plug#begin('~/.config/nvim/plugins')
 
 Plug 'shaunsingh/nord.nvim'
@@ -97,7 +96,6 @@ Plug 'norcalli/nvim-colorizer.lua'
 " programming
 Plug 'github/copilot.vim'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'tpope/vim-fugitive'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'cespare/vim-toml'
 Plug 'vim-test/vim-test'
@@ -138,6 +136,7 @@ Plug 'mhartington/formatter.nvim'
 
 " syntax
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'SmiteshP/nvim-gps'
 
 " search
 Plug 'nvim-lua/plenary.nvim'
@@ -151,18 +150,12 @@ Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
 
-filetype plugin indent on
-
-set completeopt=menu,menuone,noselect
-
-" " Startify
+" Startify
 let g:startify_enable_special = 0
 let g:startify_lists = [
             \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
             \ { 'type': 'files',     'header': ['   Files'] },
             \]
-
-nnoremap <leader>fgb :Git blame --date=short<cr>
 
 " colorscheme
 set noshowmode
@@ -254,6 +247,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<m-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', '<m-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>d', '<cmd>lua vim.diagnostic.disable()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
 end
@@ -296,7 +290,7 @@ require('formatter').setup {
       function()
         return {
           exe = "black",
-          args = { '-l 120' },
+          args = { '- -l 120' },
           stdin = true,
         }
       end
@@ -312,12 +306,14 @@ require('formatter').setup {
     },
   }
 }
-EOF
 
+vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
   autocmd BufWritePost *.py,*.go FormatWrite
 augroup END
+]], true)
+EOF
 
 " nvim-cmp.
 lua <<EOF
@@ -474,11 +470,11 @@ require("lualine").setup {
 EOF
 
 " telescope
-nnoremap <silent><leader>ff <cmd>Telescope find_files<cr>
-nnoremap <silent><leader>fr <cmd>Telescope live_grep<cr>
-xnoremap <silent><leader>fr y:Telescope live_grep<cr><c-r>"
-nnoremap <silent><leader>fb <cmd>Telescope buffers<cr>
-nnoremap <silent><leader>fgf <cmd>Telescope git_status<cr>
+nnoremap <silent> <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <silent> <leader>fr <cmd>Telescope live_grep<cr>
+xnoremap <silent> <leader>fr y:Telescope live_grep<cr><c-r>"
+nnoremap <silent> <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <silent> <leader>fg <cmd>Telescope git_status<cr>
 nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
 
 " nvim-treesitter
@@ -508,6 +504,8 @@ require('gitsigns').setup {
   }
 }
 EOF
+nnoremap <silent> <leader>gs :Gitsigns preview_hunk<CR>
+nnoremap <silent> <leader>gb :Gitsigns blame_line<cr>
 
 " project.nvim
 lua << EOF
@@ -515,3 +513,17 @@ require("project_nvim").setup { }
 require('telescope').load_extension('projects')
 EOF
 nnoremap <silent> <leader>p :Telescope projects<CR>
+
+" nvim-gps
+lua << EOF
+require("nvim-gps").setup()
+local gps = require("nvim-gps")
+require("lualine").setup({
+  sections = {
+    lualine_c = {
+      { "filename", file_status=true, path=1 },
+      { gps.get_location, cond = gps.is_available },
+    }
+  }
+})
+EOF
