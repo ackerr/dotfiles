@@ -40,7 +40,8 @@ set expandtab
 set clipboard=unnamed
 set scrolloff=5
 
-set fillchars=vert:\│ " 设置split分隔符
+set completeopt=menu,menuone,noselect
+
 set noswapfile  " 不需要.swp文件
 
 " fold
@@ -78,7 +79,7 @@ nnoremap <c-l> <c-w><c-l>
 call plug#begin('~/.config/nvim/plugins')
 
 Plug 'shaunsingh/nord.nvim'
-Plug 'mhinz/vim-startify'
+Plug 'goolord/alpha-nvim'
 
 " edit
 Plug 'tpope/vim-surround'
@@ -141,7 +142,7 @@ Plug 'SmiteshP/nvim-gps'
 " search
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'ahmedkhalf/project.nvim'
+Plug 'nvim-telescope/telescope-project.nvim'
 
 " snippet.
 Plug 'rafamadriz/friendly-snippets'
@@ -149,13 +150,6 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
-
-" Startify
-let g:startify_enable_special = 0
-let g:startify_lists = [
-            \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-            \ { 'type': 'files',     'header': ['   Files'] },
-            \]
 
 " colorscheme
 set noshowmode
@@ -225,6 +219,38 @@ let test#go#runner = "gotest"
 
 let test#python#pytest#options = "--color=yes"
 let g:ultest_use_pty = 1
+
+" alpha.nvim
+lua << EOF
+local alpha = require('alpha')
+local dashboard = require('alpha.themes.dashboard')
+
+local function pick_color()
+  local colors = {"String", "Identifier", "Keyword", "Number"}
+  return colors[math.random(#colors)]
+end
+
+dashboard.section.header.opts.hl = pick_color()
+
+dashboard.section.buttons.val = {
+    dashboard.button( "e", "  > New file", ":ene <BAR> startinsert <CR>"),
+    dashboard.button( "<Leader> ff", "  > Find file"),
+    dashboard.button( "<Leader> fr", "  > Find word"),
+    dashboard.button( "<Leader>  p", "  > Find project"),
+    dashboard.button( "<Leader> rr", "  > Recent", ":Telescope oldfiles<CR>"),
+    dashboard.button( "<Leader> ev", "  > Settings"),
+    dashboard.button( "q", "  > Quit", ":qa<CR>"),
+}
+
+local fortune = require("alpha.fortune")
+dashboard.section.footer.val = fortune()
+
+alpha.setup(dashboard.opts)
+
+vim.cmd([[
+    autocmd FileType alpha setlocal nofoldenable
+]])
+EOF
 
 " lsp config
 lua << EOF
@@ -422,6 +448,10 @@ require('nvim-tree').setup {
   }
 }
 EOF
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ }
 
 nnoremap <leader>n :NvimTreeToggle<CR>
 nnoremap <leader>m :NvimTreeFindFile<CR>
@@ -507,12 +537,14 @@ EOF
 nnoremap <silent> <leader>gs :Gitsigns preview_hunk<CR>
 nnoremap <silent> <leader>gb :Gitsigns blame_line<cr>
 
-" project.nvim
+"telescope-project
 lua << EOF
-require("project_nvim").setup { }
-require('telescope').load_extension('projects')
+require('telescope').load_extension('project')
+vim.api.nvim_set_keymap(
+    'n', '<leader>p', ":lua require'telescope'.extensions.project.project{ display_type = 'full' }<CR>",
+    {noremap = true, silent = true}
+)
 EOF
-nnoremap <silent> <leader>p :Telescope projects<CR>
 
 " nvim-gps
 lua << EOF
