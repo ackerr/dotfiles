@@ -13,6 +13,7 @@ vim.cmd([[
 ]])
 
 vim.opt.backspace = "2"
+vim.opt.updatetime = 500
 vim.opt.signcolumn = "yes"
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
@@ -99,7 +100,6 @@ Plug("norcalli/nvim-colorizer.lua")
 -- programming
 Plug("github/copilot.vim")
 Plug("lewis6991/gitsigns.nvim")
-Plug("tpope/vim-fugitive")
 Plug("andrewstuart/vim-kubernetes")
 Plug("cespare/vim-toml")
 Plug("vim-test/vim-test")
@@ -202,7 +202,7 @@ vim.g.floaterm_height = 0.6
 
 -- vim-translator
 keymap("n", "<M-t>", ":TranslateW<CR>")
-keymap("v", "<M-t>", ":TranslateWV<CR>")
+keymap("v", "<M-t>", ":TranslateW<CR>")
 
 -- splitjoin
 keymap("n", "sj", ":SplitjoinSplit<CR>")
@@ -251,23 +251,45 @@ vim.cmd([[
     autocmd FileType alpha setlocal nofoldenable
 ]])
 
--- lsp config
-local on_attach = function(_, bufnr)
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
+local function lsp_document_highlight(client)
+	if client.resolved_capabilities.document_highlight then
+		vim.api.nvim_exec(
+			[[
+            augroup lsp_document_highlight
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+            ]],
+			false
+		)
+	end
+end
+
+local function lsp_keymap(bufnr)
+	local function buf_keymap(mode, key, cmd)
+		vim.api.nvim_buf_set_keymap(bufnr, mode, key, cmd, { noremap = true, silent = true })
 	end
 
-	-- Enable completion triggered by <c-x><c-o>
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-	keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-	keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-	keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-	keymap("n", "<m-k>", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
-	keymap("n", "<m-j>", "<cmd>lua vim.diagnostic.goto_next()<CR>")
-	keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.disable()<CR>")
+	buf_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
+	buf_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+	buf_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+	buf_keymap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+	buf_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+	buf_keymap("n", "<m-k>", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+	buf_keymap("n", "<m-j>", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+	buf_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.disable()<CR>")
+	buf_keymap("n", "<leader>cs", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+end
+
+-- lsp config
+local on_attach = function(client, bufnr)
+	if client.name == "gopls" then
+		client.resolved_capabilities.document_formatting = false
+	end
+
+	lsp_keymap(bufnr)
+	lsp_document_highlight(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -286,11 +308,19 @@ lsp_installer.on_server_ready(function(server)
 end)
 
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = false,
 	signs = true,
-	underline = false,
-	update_in_insert = false,
+	underline = true,
+	update_in_insert = true,
 	severity_sort = false,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
 })
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -318,6 +348,7 @@ local cmp = require("cmp")
 local lspkind = require("lspkind")
 cmp.setup({
 	formatting = {
+		fields = { "kind", "abbr" },
 		format = lspkind.cmp_format({ with_text = false, maxwidth = 50 }),
 	},
 	mapping = {
@@ -355,8 +386,12 @@ cmp.setup({
 	sources = {
 		{ name = "nvim_lsp" },
 		{ name = "vsnip" },
-		{ name = "path" },
 		{ name = "buffer" },
+		{ name = "path" },
+	},
+	confirm_opts = {
+		behavior = cmp.ConfirmBehavior.Replace,
+		select = false,
 	},
 })
 
