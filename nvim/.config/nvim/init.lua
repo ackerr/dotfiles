@@ -49,7 +49,7 @@ local function keymap(mode, key, cmd)
 end
 
 keymap("i", "jk", "<Esc>")
-keymap("n", "<leader>ev", ":vsplit $MYVIMRC<CR>")
+keymap("n", "<leader>ev", ":edit $MYVIMRC<CR>")
 keymap("n", "<leader>sv", ":source $MYVIMRC<CR>")
 keymap("n", "<c-y>", "viwy")
 
@@ -136,7 +136,7 @@ Plug("windwp/nvim-autopairs")
 Plug("onsails/lspkind-nvim")
 
 -- lsp format
-Plug("mhartington/formatter.nvim")
+Plug("jose-elias-alvarez/null-ls.nvim")
 
 -- syntax
 Plug("nvim-treesitter/nvim-treesitter", { ["do"] = ":TSUpdate" })
@@ -155,12 +155,10 @@ Plug("hrsh7th/vim-vsnip")
 vim.call("plug#end")
 
 -- nord
-vim.g.nord_enable_sidebar_background = "v:false"
-vim.g.nord_contrast = "v:true"
-vim.g.nord_disable_background = "v:false"
-vim.cmd([[
-    silent! colorscheme nord
-]])
+vim.g.nord_enable_sidebar_background = false
+vim.g.nord_contrast = true
+vim.g.nord_disable_background = false
+vim.cmd([[ silent! colorscheme nord ]])
 
 -- vim-commentary
 keymap("n", "<leader>/", ":Commentary<CR>")
@@ -187,9 +185,9 @@ vim.g.easy_align_delimiters = {
 
 -- vim-floaterm
 keymap("n", "<leader>ft", ":FloatermNew --wintype=normal --position=bottom --height=20<CR>")
-keymap("n", "<leader>fp", ":FloatermNew --wintype=normal --position=right --width=0.5 --name=ipy ipython<cr>")
-keymap("v", "<leader>fs", ":FloatermSend<cr>")
-keymap("t", "<m-]>", "<c-\\><c-n>:FloatermNext<cr>")
+keymap("n", "<leader>fp", ":FloatermNew --wintype=normal --position=right --width=0.5 --name=ipy ipython<CR>")
+keymap("v", "<leader>fs", ":FloatermSend<CR>")
+keymap("t", "<m-]>", "<c-\\><c-n>:FloatermNext<CR>")
 keymap("t", "<m-[>", "<c-\\><c-n>:FloatermP<c-\\><c-n><c-w>w")
 keymap("t", "<c-w><c-w>", "<c-\\><c-n><c-w>w")
 
@@ -203,12 +201,12 @@ vim.g.floaterm_width = 0.7
 vim.g.floaterm_height = 0.6
 
 -- vim-translator
-keymap("n", "<M-t>", ":TranslateW")
-keymap("v", "<M-t>", ":TranslateWV")
+keymap("n", "<M-t>", ":TranslateW<CR>")
+keymap("v", "<M-t>", ":TranslateWV<CR>")
 
 -- splitjoin
-keymap("n", "sj", ":SplitjoinSplit<cr>")
-keymap("n", "sk", ":SplitjoinJoin<cr>")
+keymap("n", "sj", ":SplitjoinSplit<CR>")
+keymap("n", "sk", ":SplitjoinJoin<CR>")
 
 -- vim-test and vim-ultest
 keymap("n", "tn", ":TestNearest<CR>")
@@ -266,11 +264,10 @@ local on_attach = function(_, bufnr)
 	keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
 	keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 	keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-	keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+	keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 	keymap("n", "<m-k>", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 	keymap("n", "<m-j>", "<cmd>lua vim.diagnostic.goto_next()<CR>")
-	keymap("n", "<space>d", "<cmd>lua vim.diagnostic.disable()<CR>")
-	keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+	keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.disable()<CR>")
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -301,49 +298,6 @@ for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
-
--- formatter
-require("formatter").setup({
-	filetype = {
-		python = {
-			function()
-				return {
-					exe = "black",
-					args = { "- -l 120" },
-					stdin = true,
-				}
-			end,
-		},
-		go = {
-			function()
-				return {
-					exe = "goimports",
-					args = { "-w", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end,
-		},
-		lua = {
-			function()
-				return {
-					exe = "stylua",
-					args = { "-" },
-					stdin = true,
-				}
-			end,
-		},
-	},
-})
-
-vim.api.nvim_exec(
-	[[
-    augroup FormatAutogroup
-      autocmd!
-      autocmd BufWritePost *.py,*.go,*.lua FormatWrite
-    augroup END
-]],
-	true
-)
 
 -- nvim-cmp.
 vim.cmd([[highlight CmpItemAbbrDeprecated guifg=#D8DEE9 guibg=NONE gui=strikethrough]])
@@ -456,9 +410,9 @@ keymap("n", "<leader>n", ":NvimTreeToggle<CR>")
 keymap("n", "<leader>m", ":NvimTreeFindFile<CR>")
 
 -- github copilot
-vim.g["copilot_no_tab_map"] = "v:true"
-vim.g["copilot_assume_mapped"] = "v:true"
-vim.g["copilot_tab_fallback"] = ""
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
 
 -- bufferline.nvim
 require("bufferline").setup({
@@ -496,12 +450,12 @@ require("lualine").setup({
 })
 
 -- telescope
-keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
-keymap("n", "<leader>fr", "<cmd>Telescope live_grep<cr>")
-keymap("x", "<leader>fr", 'y:Telescope live_grep<cr><c-r>"')
-keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-keymap("n", "<leader>fg", "<cmd>Telescope git_status<cr>")
-keymap("n", "gr", "<cmd>Telescope lsp_references<cr>")
+keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>")
+keymap("n", "<leader>fr", "<cmd>Telescope live_grep<CR>")
+keymap("x", "<leader>fr", 'y:Telescope live_grep<CR><c-r>"')
+keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>")
+keymap("n", "<leader>fg", "<cmd>Telescope git_status<CR>")
+keymap("n", "gr", "<cmd>Telescope lsp_references<CR>")
 
 -- nvim-treesitter
 require("colorizer").setup({ "*" })
@@ -527,7 +481,7 @@ require("gitsigns").setup({
 	},
 })
 keymap("n", "<leader>gs", ":Gitsigns preview_hunk<CR>")
-keymap("n", "<leader>gb", ":Gitsigns blame_line<cr>")
+keymap("n", "<leader>gb", ":Gitsigns blame_line<CR>")
 
 -- telescope-project
 require("telescope").load_extension("project")
@@ -544,3 +498,19 @@ require("lualine").setup({
 		},
 	},
 })
+
+-- null-ls.nvim
+local formatting = require("null-ls").builtins.formatting
+local diagnostics = require("null-ls").builtins.diagnostics
+require("null-ls").setup({
+	sources = {
+		formatting.stylua,
+		formatting.goimports,
+		formatting.black.with({ extra_args = { "--line-length", "120" } }),
+
+		diagnostics.flake8,
+		diagnostics.golangci_lint,
+	},
+})
+vim.cmd([[ command! Formatting exec 'lua vim.lsp.buf.formatting()' ]])
+vim.api.nvim_exec([[ autocmd BufWritePost *.py,*.go,*.lua Formatting ]], true)
