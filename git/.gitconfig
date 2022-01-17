@@ -64,5 +64,3 @@
     user = Ackerr
 [includeIf "gitdir:~/zaihui/"]
     path = ~/.gitconfig-zaihui
-[http "https://github.com"]
-	proxy = http://172.29.128.1:7890

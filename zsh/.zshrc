@@ -117,6 +117,9 @@ export PATH="${GOPATH}:${GOPATH}/bin:${PATH}"
 export GO111MODULE=on
 export GOPROXY='https://goproxy.cn,direct'
 
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # fzf
 bindkey '^T' fzf-file-widget
 bindkey '^R' fzf-history-widget
