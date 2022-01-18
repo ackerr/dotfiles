@@ -1,6 +1,6 @@
 TARGET ?= ~
 
-.PHONY: stow dryrunn override
+.PHONY: stow dryrunn override kitty
 
 stow:
 	stow git nvim tmux zsh --target $(TARGET)
@@ -10,3 +10,6 @@ dryrun:
 
 override:
 	stow git nvim tmux zsh --target $(TARGET) --adopt
+
+kitty:
+	stow kitty --target $(TARGET)
