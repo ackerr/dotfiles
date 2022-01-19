@@ -1,1 +1,0 @@
-## Ackerr's NeoVim Configuration

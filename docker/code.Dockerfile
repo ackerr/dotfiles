@@ -28,8 +28,7 @@ RUN tmux start-server && \
 
 # Init vim
 RUN pip install pynvim && \
-    npm install -g neovim yarn && \
-    nvim -E +PlugInstall +qall && \
-    cd $HOME/.config/coc/extensions/ && yarn install
+    npm install -g neovim && \
+    nvim -E +PlugInstall +qall
 
 ENTRYPOINT ["/bin/zsh"]
