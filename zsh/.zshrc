@@ -95,8 +95,11 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 if [[ $TMUX != "" ]] then
     export TERM="tmux-256color"
-elif [[ -n $KITTY_WINDOW_ID ]] then  # undercurl support
+# undercurl support
+elif [[ -n $KITTY_WINDOW_ID ]] then
     export TERM="xterm-kitty"
+elif [[ -n $WEZTERM_PANE ]] then
+    export TERM="wezterm"
 else
     export TERM="xterm-256color"
 fi

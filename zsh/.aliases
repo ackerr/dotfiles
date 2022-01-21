@@ -1,5 +1,6 @@
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ll='ls -al'
 alias ipy='ipython'
 alias sb='source env/bin/activate'
 alias de='deactivate'
@@ -13,7 +14,6 @@ alias g='git'
 
 alias gpath="cd $GOPATH/src/"
 
-alias sssh='ssh -t agate ssh -t'
 alias vim-install='vim +PlugInstall +qall'
 alias cgd='hexo clean && hexo g && hexo d'
 

@@ -1,6 +1,6 @@
 TARGET ?= ~
 
-.PHONY: stow dryrunn override kitty
+.PHONY: stow dryrunn override kitty wezterm alacritty
 
 stow:
 	stow git tmux zsh --target $(TARGET)
@@ -13,3 +13,9 @@ override:
 
 kitty:
 	stow kitty --target $(TARGET)
+
+wezterm:
+	stow wezterm --target $(TARGET)
+
+alacritty:
+	stow alacritty --target $(TARGET)
