@@ -14,6 +14,7 @@ end)
 
 return {
 	-- color_scheme = "nord",
+	force_reverse_video_cursor = true,
 	colors = {
 		foreground = "#dcd7ba",
 		background = "#1f1f28",
