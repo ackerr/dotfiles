@@ -60,6 +60,7 @@ return {
 			mods = "SUPER",
 			action = wezterm.action({ SplitHorizontal = { domain = "CurrentPaneDomain" } }),
 		},
+		{ key = "Enter", mods = "ALT", action = "DisableDefaultAssignment" },
 		{ key = "Enter", mods = "SUPER", action = "ToggleFullScreen" },
 		{ key = "w", mods = "SUPER", action = wezterm.action({ CloseCurrentPane = { confirm = false } }) },
 		{ key = "[", mods = "SUPER", action = wezterm.action({ ActivatePaneDirection = "Prev" }) },

@@ -1,20 +1,39 @@
-# (..•˘_˘•..)
+# Ackerr's dotfiles
 ![](https://github.com/Ackerr/dotfiles/workflows/CI/badge.svg)
 ![](https://github.com/Ackerr/dotfiles/workflows/Build/badge.svg)
 
-## Install
+## Requirements
 
-First, make sure that install the `stow` command
+- [homebrew](https://brew.sh/)
 
+```bash
+brew install git make stow zsh
 ```
-brew install stow
+
+## Installation 
+
+### Clone repo 
+
+```bash
+git clone https://github.com/Ackerr/dotfiles.git && cd dotfiles
 ```
 
-Then, clone this repo and run `make stow` to link dotfiles.
-```
-$ git clone https://github.com/Ackerr/dotfiles.git && cd dotfiles
+### Install brew packages
 
-$ make stow
+```bash
+brew bundle --file=brew/Brewfile
+```
+
+### Set zsh as your default shell
+
+```bash
+chsh -s $(which zsh)
+```
+
+### Link all dotfiles
+
+```bash
+make stow
 ```
 
 > Remember replace `.gitconfig` email

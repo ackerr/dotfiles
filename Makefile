@@ -1,6 +1,6 @@
 TARGET ?= ~
 
-.PHONY: stow dryrunn override kitty wezterm alacritty
+.PHONY: stow dryrunn override kitty wezterm alacritty brew
 
 stow:
 	stow git tmux zsh --target $(TARGET)
@@ -19,3 +19,6 @@ wezterm:
 
 alacritty:
 	stow alacritty --target $(TARGET)
+
+brew:
+	brew bundle --file=brew/Brewfile
