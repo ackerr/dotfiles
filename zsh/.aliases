@@ -14,7 +14,6 @@ alias g='git'
 
 alias gpath="cd $GOPATH/src/"
 
-alias vim-install='vim +PlugInstall +qall'
 alias cgd='hexo clean && hexo g && hexo d'
 
 # git
@@ -40,7 +39,6 @@ drmi() { docker rmi `docker images | grep $1 | awk -F  ' ' '{print $3}'`; }
 # k8s
 alias k='kubectl'
 alias kk='k9s'
-alias kx='kubectx'
 alias km='kustomize'
 alias kg='kubectl get'
 alias kc='kubectl config'
@@ -80,3 +78,8 @@ alias ra='ranger'
 alias tt='tmux'
 
 alias ls='exa --icons --no-user'
+
+alias gfmt='find . -name "*.go" | gawk -n 1 | xargs goimports -w'
+
+alias vi='nvim'
+alias vim='nvim'

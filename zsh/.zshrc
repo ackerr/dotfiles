@@ -79,11 +79,14 @@ zinit ice lucid wait='1' as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
 zinit light sharkdp/fd
 
 # # vi-mode
-set -o vi
-zle_highlight=(region:bg=yellow)  # highlight visual indication of the selected text
-zinit ice lucid wait='1'
-zinit light b4b4r07/zsh-vimode-visual
-zinit snippet OMZ::plugins/vi-mode/vi-mode.plugin.zsh
+# set -o vi
+# zle_highlight=(region:bg=yellow)  # highlight visual indication of the selected text
+# zinit ice lucid wait='1'
+# zinit light b4b4r07/zsh-vimode-visual
+# zinit snippet OMZ::plugins/vi-mode/vi-mode.plugin.zsh
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
 
 # p10k theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -134,6 +137,8 @@ export FZF_PREVIEW_OPTS="--preview 'bat --color=always --style=header,grid --lin
 export FZF_CTRL_T_OPTS="$FZF_PREVIEW_OPTS"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type f"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
+
+setopt no_nomatch
 
 # alias
 [ -f ~/.aliases ] && source ~/.aliases
