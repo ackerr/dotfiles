@@ -4,7 +4,8 @@
 
 ## Requirements
 
-- [homebrew](https://brew.sh/)
+- [Homebrew](https://brew.sh/)
+- [Fira Code NerdFont](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip)
 
 ```bash
 brew install git make stow zsh
