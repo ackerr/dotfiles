@@ -2,42 +2,28 @@
     d = diff
     co = checkout
     br = branch
-    brd = branch -D
-    pod = push o --delete
     st = status
     ci = commit
     cia = commit --all
     cim = commit --amend
     cima = commit --amend --all
-    crp = cherry-pick
     dfl = diff --name-status
     dfs = diff --staged
-    dl = diff HEAD^
     f = fetch --tags
     last = log -1 HEAD
     logg = log --graph --decorate --oneline --abbrev-commit --all
     logo = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     logs = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    mgf = merge --ff-only
     p = push
-    pf = push -f
-    pua = push -u z HEAD:alpha-only -f
-    pui = push -u z HEAD:init -f
-    puo = push -u o
-    puz = push -u z
-    plbr = pull --prune
+    puo = push o
     rb = rebase
     rbc = rebase --continue
     rbi = rebase -i
-    rbd = rebase z/dev
     rs = reset HEAD^
     rh = reset --hard
-    rhd = reset --hard z/dev
     rroo = remote rename origin o
     slog = log --graph --decorate --oneline --all --simplify-by-decoration
     squash = rebase HEAD~2 -i
-    changed = update-index --no-assume-unchanged
-    unchanged = update-index --assume-unchanged
     slist = stash list
     spop = stash pop
     sdrop = stash drop
@@ -62,5 +48,3 @@
     email = wzmmmmj@gmail.com
 [github]
     user = Ackerr
-[includeIf "gitdir:~/zaihui/"]
-    path = ~/.gitconfig-zaihui

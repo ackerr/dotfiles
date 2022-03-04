@@ -79,7 +79,5 @@ alias tt='tmux'
 
 alias ls='exa --icons --no-user'
 
-alias gfmt='find . -name "*.go" | gawk -n 1 | xargs goimports -w'
-
 alias vi='nvim'
 alias vim='nvim'
