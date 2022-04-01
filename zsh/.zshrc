@@ -92,7 +92,10 @@ zinit light jeffreytse/zsh-vi-mode
 # zinit light romkatv/powerlevel10k
 #
 # starship theme
-eval $(starship init zsh)
+zinit ice as"command" from"gh-r" \
+    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+    atpull"%atclone" src"init.zsh"
+zinit light starship/starship
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8

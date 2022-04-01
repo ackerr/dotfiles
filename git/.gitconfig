@@ -48,3 +48,5 @@
     email = wzmmmmj@gmail.com
 [github]
     user = Ackerr
+[diff]
+	external = difft  # cargo install difftastic 

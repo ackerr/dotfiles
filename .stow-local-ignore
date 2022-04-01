@@ -1,7 +1,0 @@
-\.git
-\.github
-\.gitignore
-\.dockerignore
-
-^docker
-^win
