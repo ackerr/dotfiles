@@ -72,18 +72,25 @@ zinit ice lucid wait='1' from"gh-r" as"program" mv"ripgrep* -> ripgrep" pick"rip
 zinit light BurntSushi/ripgrep
 
 zinit ice lucid wait='1' as"program" from"gh-r" mv"lazygit* -> lazygit"
-zinit light 'jesseduffield/lazygit'
+zinit light jesseduffield/lazygit
 
 zinit ice lucid wait='1' as"program" from"gh-r" mv"lazydocker* -> lazydocker"
-zinit light 'jesseduffield/lazydocker'
+zinit light jesseduffield/lazydocker
 
 zinit ice lucid wait='1' as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
 zinit light sharkdp/fd
 
-# # vi-mode
+# vi-mode
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 
+# https://github.com/jeffreytse/zsh-vi-mode/issues/15
+function zvm_before_init() {
+  zvm_bindkey viins '^[[A' history-beginning-search-backward
+  zvm_bindkey viins '^[[B' history-beginning-search-forward
+  zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+  zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+}
 
 # p10k theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -129,6 +136,7 @@ export GO111MODULE=on
 export GOPROXY='https://goproxy.cn,direct'
 
 # rust
+export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # fzf
