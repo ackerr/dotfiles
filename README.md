@@ -34,7 +34,7 @@ chsh -s $(which zsh)
 ### Link all dotfiles
 
 ```bash
-make stow
+make
 ```
 
 > Remember replace `.gitconfig` email

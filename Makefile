@@ -1,8 +1,8 @@
 TARGET ?= ~
 
-.PHONY: stow dryrunn override kitty wezterm alacritty brew
+.PHONY: dryrun override kitty wezterm alacritty brew
 
-stow:
+all: dryrun
 	stow git tmux zsh --target $(TARGET)
 
 dryrun:

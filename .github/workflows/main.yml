@@ -14,4 +14,4 @@ jobs:
       - name: Set up git repo
         uses: actions/checkout@v2
       - name: Test Installer
-        run: sudo apt-get install -y stow make && make stow
+        run: sudo apt-get install -y stow make && make
