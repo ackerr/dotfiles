@@ -77,7 +77,7 @@ alias ra='ranger'
 # tmux
 alias tt='tmux'
 
-alias ls='exa --icons --no-user'
+alias ls='exa --icons --no-user -a'
 
 alias vi='nvim'
 alias vim='nvim'
