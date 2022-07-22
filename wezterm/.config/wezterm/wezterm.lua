@@ -13,7 +13,6 @@ wezterm.on("toggle-opacity", function(window, _)
 end)
 
 return {
-	-- color_scheme = "nord",
 	force_reverse_video_cursor = true,
 	colors = {
 		foreground = "#dcd7ba",
@@ -38,7 +37,7 @@ return {
 	default_cursor_style = "BlinkingBar",
 	cursor_blink_rate = 500,
 	exit_behavior = "CloseOnCleanExit",
-	font_size = 14,
+	font_size = 16,
 	initial_cols = 160,
 	initial_rows = 48,
 	window_decorations = "RESIZE",

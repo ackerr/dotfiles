@@ -35,8 +35,11 @@ autoload -Uz _zinit
 autoload -Uz compinit
 compinit
 
-zinit ice lucid wait='1'
-zinit light skywind3000/z.lua
+zinit ice lucid wait"1" as"command" from"gh-r" lucid \
+  mv"zoxide*/zoxide -> zoxide" \
+  atclone"./zoxide init zsh > init.zsh" \
+  atpull"%atclone" src"init.zsh" nocompile'!'
+zinit light ajeetdsouza/zoxide
 
 zinit ice lucid wait'0b' from"gh-r" as"program"
 zinit light junegunn/fzf
@@ -97,11 +100,11 @@ function zvm_before_init() {
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # zinit ice depth=1
 # zinit light romkatv/powerlevel10k
-#
+
 # starship theme
 zinit ice as"command" from"gh-r" \
-    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-    atpull"%atclone" src"init.zsh"
+  atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+  atpull"%atclone" src"init.zsh" # pull behavior same as clone, source init.zsh
 zinit light starship/starship
 
 export LANG=en_US.UTF-8
