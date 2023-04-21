@@ -69,9 +69,6 @@ alias lc='lab ci -l'
 alias lcl='lab clone'
 alias cs='cd `lab ws -d 5`'
 
-# ranger
-alias ra='ranger'
-
 # tmux
 alias tt='tmux'
 
