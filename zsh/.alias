@@ -72,11 +72,14 @@ alias cs='cd `lab ws -d 5`'
 # tmux
 alias tt='tmux'
 
-alias ls='exa --icons --no-user'
+alias ls='eza --icons --no-user'
 alias cat='bat'
 
 alias vi='nvim'
 alias vim='nvim'
+
+
+alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 
 function workup {
     if [[ -n "$TMUX" ]]
@@ -86,4 +89,13 @@ function workup {
     tmux ls -F '#{session_name}' |
     fzf --bind=enter:replace-query+print-query |
     read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
+}
+
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
 }

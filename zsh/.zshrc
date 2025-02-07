@@ -114,6 +114,7 @@ if [[ $TMUX != "" ]] then
 # undercurl support
 elif [[ -n $KITTY_WINDOW_ID ]] then
     export TERM="xterm-kitty"
+# https://wezfurlong.org/wezterm/config/lua/config/term.html
 elif [[ -n $WEZTERM_PANE ]] then
     export TERM="wezterm"
 else
@@ -123,10 +124,9 @@ export BAT_THEME='Dracula'
 export EDITOR='nvim'
 
 # python
-export PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
-# if command -v pyenv 1>/dev/null 2>&1; then
-#   eval "$(pyenv init -)"
-# fi
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
@@ -143,8 +143,8 @@ export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # fzf
-bindkey '^T' fzf-file-widget
-bindkey '^R' fzf-history-widget
+# bindkey '^T' fzf-file-widget
+# bindkey '^R' fzf-history-widget
 export FZF_DEFAULT_COMMAND="fd --exclude={'env,.git,.vscode,.idea,node_moudles,__pycache__'} --hidden --follow"
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --pointer='▶' --marker='✓' --preview-window=:70% --bind 'ctrl-f:page-down,ctrl-b:page-up,ctrl-a:toggle-all'"
 export FZF_PREVIEW_OPTS="--preview 'bat --color=always --style=header,grid --line-range :300 {}'"
@@ -152,7 +152,22 @@ export FZF_CTRL_T_OPTS="$FZF_PREVIEW_OPTS"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type f"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
 
+export FZF_CTRL_R_OPTS="
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+# export FZF_CTRL_R_OPTS="
+#   --preview 'echo {}' --preview-window up:3:hidden:wrap
+#   --bind 'ctrl-/:toggle-preview'
+#   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+#   --color header:italic
+#   --header 'Press CTRL-Y to copy command into clipboard'"
+
 # alias
 [ -f ~/.alias ] && source ~/.alias
 [ -f ~/.profile ] && source ~/.profile
 [ -f ~/.bash_profile ] && source ~/.bash_profile
+[ -f ~/.zprofile ] && source ~/.zprofile
+eval "$(/Users/ackerr/.local/bin/mise activate zsh)"
