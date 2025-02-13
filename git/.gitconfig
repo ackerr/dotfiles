@@ -12,6 +12,7 @@
     f = fetch --tags
     last = log -1 HEAD
     logg = log --graph --decorate --oneline --abbrev-commit --all
+    logo = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     logs = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     p = push
     puo = push o
@@ -30,6 +31,9 @@
 
     back = reset --soft HEAD^
     cancel = restore --staged .
+
+    pso = "!git push --set-upstream o \"$(git rev-parse --abbrev-ref HEAD)\""
+    plo = "!git pull o \"$(git rev-parse --abbrev-ref HEAD)\""
 [core]
     editor = nvim
     autocrlf = false
@@ -41,6 +45,7 @@
 [merge]
     tool = vimdiff
 [push]
+    default = current
     mail = wzmmmmj@gmail.com
 [user]
     name = Ackerr
@@ -48,4 +53,4 @@
 [github]
     user = Ackerr
 [diff]
-	external = difft  # cargo install difftastic 
+	external = difft # cargo install difftastic
