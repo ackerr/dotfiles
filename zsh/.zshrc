@@ -1,18 +1,5 @@
-# auto load tmux
-# https://github.com/romkatv/powerlevel10k/issues/1203
-# if [ -z "$TMUX" ]; then
-#   exec tmux new-session -A -s codespace
-# fi
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
 if [[ ! -d $HOME/.tmux/plugins/tpm/ ]]; then
-    command mkdir -p "$HEOM/.tmux/plugins"
+    command mkdir -p "$HOME/.tmux/plugins"
     command git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
@@ -49,7 +36,12 @@ zinit snippet OMZP::fzf
 zinit snippet "https://github.com/junegunn/fzf/blob/master/shell/completion.zsh"
 zinit snippet "https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh"
 
-zinit ice lucid wait='1'
+# Load completions first
+zinit ice lucid wait='0a' atload"zicompinit; zicdreplay"
+zinit light zsh-users/zsh-completions
+
+# fzf-tab MUST load after compinit but before autosuggestions
+zinit ice lucid wait='0b'
 zinit light Aloxaf/fzf-tab
 
 zinit ice lucid wait='1'
@@ -59,9 +51,7 @@ zinit ice lucid wait='1' atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
 
-zinit ice lucid wait='1'
-zinit light zsh-users/zsh-completions
-zinit snippet OMZ::lib/completion.zsh
+# Removed OMZ::lib/completion.zsh to avoid multiple compinit calls
 zinit snippet OMZ::lib/history.zsh
 zinit snippet OMZ::lib/key-bindings.zsh
 
@@ -95,12 +85,6 @@ function zvm_before_init() {
   zvm_bindkey vicmd '^[[B' history-beginning-search-forward
 }
 
-# p10k theme
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# zinit ice depth=1
-# zinit light romkatv/powerlevel10k
-
 # starship theme
 zinit ice as"command" from"gh-r" \
   atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
@@ -115,18 +99,13 @@ if [[ $TMUX != "" ]] then
 elif [[ -n $KITTY_WINDOW_ID ]] then
     export TERM="xterm-kitty"
 # https://wezfurlong.org/wezterm/config/lua/config/term.html
-elif [[ -n $WEZTERM_PANE ]] then
-    export TERM="wezterm"
+# elif [[ -n $WEZTERM_PANE ]] then
+#     export TERM="wezterm"
 else
     export TERM="xterm-256color"
 fi
 export BAT_THEME='Dracula'
 export EDITOR='nvim'
-
-# python
-# export PYENV_ROOT="$HOME/.pyenv"
-# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
@@ -134,7 +113,7 @@ fi
 
 # go
 export GOPATH="$HOME/go-base"
-export PATH="${GOPATH}:${GOPATH}/bin:${PATH}"
+export PATH="${GOPATH}/bin:${PATH}"
 export GO111MODULE=on
 export GOPROXY='https://goproxy.cn,direct'
 
@@ -143,9 +122,7 @@ export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # fzf
-# bindkey '^T' fzf-file-widget
-# bindkey '^R' fzf-history-widget
-export FZF_DEFAULT_COMMAND="fd --exclude={'env,.git,.vscode,.idea,node_moudles,__pycache__'} --hidden --follow"
+export FZF_DEFAULT_COMMAND="fd --exclude={'env,.git,.vscode,.idea,node_modules,__pycache__'} --hidden --follow"
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --pointer='▶' --marker='✓' --preview-window=:70% --bind 'ctrl-f:page-down,ctrl-b:page-up,ctrl-a:toggle-all'"
 export FZF_PREVIEW_OPTS="--preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_CTRL_T_OPTS="$FZF_PREVIEW_OPTS"
@@ -158,16 +135,15 @@ export FZF_CTRL_R_OPTS="
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
 
-# export FZF_CTRL_R_OPTS="
-#   --preview 'echo {}' --preview-window up:3:hidden:wrap
-#   --bind 'ctrl-/:toggle-preview'
-#   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
-#   --color header:italic
-#   --header 'Press CTRL-Y to copy command into clipboard'"
+export NVM_DIR="$HOME/.nvm"
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
+export NVM_AUTO_USE=false  # Must be false when lazy loading is enabled
+
+zinit light lukechilds/zsh-nvm
 
 # alias
 [ -f ~/.alias ] && source ~/.alias
 [ -f ~/.profile ] && source ~/.profile
 [ -f ~/.bash_profile ] && source ~/.bash_profile
 [ -f ~/.zprofile ] && source ~/.zprofile
-eval "$(/Users/ackerr/.local/bin/mise activate zsh)"

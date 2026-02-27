@@ -40,6 +40,7 @@
     ignorecase = false
     quotepath = false
     excludesfile = ~/.gitignore
+	hooksPath = /Users/ackerr/.githooks
 [color]
     ui = true
 [merge]

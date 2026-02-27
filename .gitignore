@@ -1,1 +1,5 @@
 *.swp
+
+# Claude Code
+.claude/memory/
+.claude/projects/
