@@ -41,6 +41,7 @@
     quotepath = false
     excludesfile = ~/.gitignore
 	hooksPath = /Users/ackerr/.githooks
+    sshCommand = "ssh -i ~/.ssh/id_ed25519_ackerr -o IdentitiesOnly=yes"
 [color]
     ui = true
 [merge]
@@ -55,3 +56,5 @@
     user = Ackerr
 [diff]
 	external = difft # cargo install difftastic
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
