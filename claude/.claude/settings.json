@@ -1,0 +1,37 @@
+{
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "sh ~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "equity-research@financial-services-plugins": true,
+    "financial-analysis@financial-services-plugins": true,
+    "wealth-management@financial-services-plugins": true
+  },
+  "alwaysThinkingEnabled": false,
+  "autoUpdatesChannel": "stable",
+  "effortLevel": "high",
+  "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "WebSearch",
+      "WebFetch",
+      "Bash(git status)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(npm run *)",
+      "Bash(npm list *)",
+      "Bash(ls *)",
+      "Bash(python *)",
+      "Bash(node *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  }
+}

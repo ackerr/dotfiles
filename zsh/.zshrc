@@ -19,8 +19,6 @@ autoload -Uz _zinit
 ### End of Zinit's installer chunk
 
 # plugins
-autoload -Uz compinit
-compinit
 
 zinit ice lucid wait"1" as"command" from"gh-r" lucid \
   mv"zoxide*/zoxide -> zoxide" \
@@ -32,16 +30,17 @@ zinit ice lucid wait'0b' from"gh-r" as"program"
 zinit light junegunn/fzf
 
 zinit ice lucid wait
-zinit snippet OMZP::fzf
-zinit snippet "https://github.com/junegunn/fzf/blob/master/shell/completion.zsh"
 zinit snippet "https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh"
 
-# Load completions first
-zinit ice lucid wait='0a' atload"zicompinit; zicdreplay"
+# Load completions first (synchronous), then initialize compinit exactly once
+zinit ice lucid
 zinit light zsh-users/zsh-completions
 
+autoload -Uz compinit
+compinit
+
 # fzf-tab MUST load after compinit but before autosuggestions
-zinit ice lucid wait='0b'
+zinit ice lucid
 zinit light Aloxaf/fzf-tab
 
 zinit ice lucid wait='1'
@@ -142,8 +141,18 @@ export NVM_AUTO_USE=false  # Must be false when lazy loading is enabled
 
 zinit light lukechilds/zsh-nvm
 
+# Keep TAB completion deterministic even if later plugins alter keymaps/styles.
+zstyle -d ':fzf-tab:*' accept-line
+if (( ${+widgets[fzf-tab-complete]} )); then
+  bindkey '^I' fzf-tab-complete
+  bindkey -M emacs '^I' fzf-tab-complete
+  bindkey -M viins '^I' fzf-tab-complete
+else
+  bindkey '^I' expand-or-complete
+  bindkey -M emacs '^I' expand-or-complete
+  bindkey -M viins '^I' expand-or-complete
+fi
+bindkey -M vicmd '^I' expand-or-complete
+
 # alias
 [ -f ~/.alias ] && source ~/.alias
-[ -f ~/.profile ] && source ~/.profile
-[ -f ~/.bash_profile ] && source ~/.bash_profile
-[ -f ~/.zprofile ] && source ~/.zprofile

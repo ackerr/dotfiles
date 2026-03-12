@@ -1,2 +1,16 @@
 add_newline = false
 command_timeout = 5000
+
+[git_status]
+disabled = true
+
+[python]
+detect_extensions = []
+detect_files = ["pyproject.toml"]
+detect_folders = []
+
+[package]
+disabled = true
+
+[gcloud]
+disabled = true

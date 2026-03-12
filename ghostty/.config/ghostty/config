@@ -1,0 +1,41 @@
+## General
+
+## Font
+font-family = "CaskaydiaCove NFM Light"
+font-family-bold = "CaskaydiaCove Nerd Font Mono"
+font-family-italic = "CaskaydiaCove NFM Light"
+font-family-bold-italic = "CaskaydiaCove Nerd Font Mono"
+font-size = 15
+
+## Colors (Kanagawa)
+foreground = #DCD7BA
+background = #1F1F28
+selection-foreground = #C8C093
+selection-background = #2D4F67
+
+# 16-color palette
+palette = 0=#090618
+palette = 1=#C34043
+palette = 2=#76946A
+palette = 3=#C0A36E
+palette = 4=#7E9CD8
+palette = 5=#957FB8
+palette = 6=#6A9589
+palette = 7=#C8C093
+palette = 8=#727169
+palette = 9=#E82424
+palette = 10=#98BB6C
+palette = 11=#E6C384
+palette = 12=#7FB4CA
+palette = 13=#938AA9
+palette = 14=#7AA89F
+palette = 15=#DCD7BA
+
+auto-update-channel = tip
+
+
+# Window/background appearance
+background-opacity = 0.80
+background-blur = 20
+keybind = cmd+u=toggle_background_opacity
+keybind = cmd+enter=toggle_maximize
