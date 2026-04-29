@@ -42,10 +42,12 @@
     excludesfile = ~/.gitignore
 	hooksPath = /Users/ackerr/.githooks
     sshCommand = "ssh -i ~/.ssh/id_ed25519_ackerr -o IdentitiesOnly=yes"
+	pager = delta
 [color]
     ui = true
 [merge]
     tool = vimdiff
+	conflictstyle = zdiff3
 [push]
     default = current
     mail = wzmmmmj@gmail.com
@@ -54,7 +56,11 @@
     email = wzmmmmj@gmail.com
 [github]
     user = Ackerr
-[diff]
-	external = difft # cargo install difftastic
 [includeIf "gitdir:~/work/"]
     path = ~/.gitconfig-work
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = false
+	line-numbers = true

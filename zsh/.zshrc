@@ -1,3 +1,5 @@
+export XDG_CONFIG_HOME="$HOME/.config"
+
 if [[ ! -d $HOME/.tmux/plugins/tpm/ ]]; then
     command mkdir -p "$HOME/.tmux/plugins"
     command git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
@@ -156,3 +158,4 @@ bindkey -M vicmd '^I' expand-or-complete
 
 # alias
 [ -f ~/.alias ] && source ~/.alias
+export PATH="$HOME/.local/bin:$PATH"

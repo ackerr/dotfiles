@@ -2,9 +2,13 @@
 
 ## Font
 font-family = "CaskaydiaCove NFM Light"
+font-family = "Sarasa Mono SC Light"
 font-family-bold = "CaskaydiaCove Nerd Font Mono"
+font-family-bold = "Sarasa Mono SC"
 font-family-italic = "CaskaydiaCove NFM Light"
+font-family-italic = "Sarasa Mono SC Light"
 font-family-bold-italic = "CaskaydiaCove Nerd Font Mono"
+font-family-bold-italic = "Sarasa Mono SC"
 font-size = 15
 
 ## Colors (Kanagawa)
