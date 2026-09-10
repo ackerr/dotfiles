@@ -108,10 +108,6 @@ fi
 export BAT_THEME='Dracula'
 export EDITOR='nvim'
 
-if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
-  source "${VIRTUAL_ENV}/bin/activate"
-fi
-
 # go
 export GOPATH="$HOME/go-base"
 export PATH="${GOPATH}/bin:${PATH}"
@@ -136,13 +132,6 @@ export FZF_CTRL_R_OPTS="
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
 
-export NVM_DIR="$HOME/.nvm"
-export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=true
-export NVM_AUTO_USE=false  # Must be false when lazy loading is enabled
-
-zinit light lukechilds/zsh-nvm
-
 # Keep TAB completion deterministic even if later plugins alter keymaps/styles.
 zstyle -d ':fzf-tab:*' accept-line
 if (( ${+widgets[fzf-tab-complete]} )); then
@@ -159,3 +148,25 @@ bindkey -M vicmd '^I' expand-or-complete
 # alias
 [ -f ~/.alias ] && source ~/.alias
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+# >>> otty shell integration >>>
+# Added by Otty — toggle in Settings > Shell > Shell Integration.
+# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
+if [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
+  . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
+fi
+# <<< otty shell integration <<<
+
+# Python and Node versions
+eval "$(mise activate zsh)"
+
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+  source "${VIRTUAL_ENV}/bin/activate"
+fi

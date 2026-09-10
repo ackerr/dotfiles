@@ -41,7 +41,7 @@
     quotepath = false
     excludesfile = ~/.gitignore
 	hooksPath = /Users/ackerr/.githooks
-    sshCommand = "ssh -i ~/.ssh/id_ed25519_ackerr -o IdentitiesOnly=yes"
+    sshCommand = "ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes"
 	pager = delta
 [color]
     ui = true

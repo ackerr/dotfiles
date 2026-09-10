@@ -3,3 +3,6 @@
 # Claude Code
 .claude/memory/
 .claude/projects/
+.claude/settings.json
+/claude/.claude/*
+!/claude/.claude/settings.json

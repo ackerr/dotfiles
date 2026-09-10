@@ -79,8 +79,6 @@ alias vi='nvim'
 alias vim='nvim'
 
 
-alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
-
 function workup {
     if [[ -n "$TMUX" ]]
     then

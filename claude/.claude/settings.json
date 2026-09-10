@@ -1,19 +1,13 @@
 {
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "sh ~/.claude/statusline-command.sh"
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
+    "API_TIMEOUT_MS": "3000000",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "1000000",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.2[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.2[1m]"
   },
-  "enabledPlugins": {
-    "equity-research@financial-services-plugins": true,
-    "financial-analysis@financial-services-plugins": true,
-    "wealth-management@financial-services-plugins": true
-  },
-  "alwaysThinkingEnabled": false,
-  "autoUpdatesChannel": "stable",
-  "effortLevel": "high",
-  "theme": "dark",
-  "preferredNotifChannel": "terminal_bell",
   "permissions": {
     "allow": [
       "Read",
@@ -33,5 +27,43 @@
     "deny": [
       "Bash(rm -rf *)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh ~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "equity-research@financial-services-plugins": true,
+    "financial-analysis@financial-services-plugins": true,
+    "wealth-management@financial-services-plugins": true,
+    "glm-plan-usage@zai-coding-plugins": true,
+    "glm-plan-bug@zai-coding-plugins": true,
+    "ponytail@ponytail": true,
+    "claude-code-wakatime@wakatime": true
+  },
+  "extraKnownMarketplaces": {
+    "zai-coding-plugins": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/ackerr/.npm/_npx/2f024689b4d0d3b0/node_modules/@z_ai/coding-helper/zai-coding-plugins"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "wakatime": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/wakatime/claude-code-wakatime.git"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": false,
+  "effortLevel": "high",
+  "autoUpdatesChannel": "stable",
+  "theme": "dark",
+  "preferredNotifChannel": "terminal_bell"
 }
